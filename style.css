@@ -1,0 +1,65 @@
+table {
+    border-collapse: collapse;
+    margin: 20px auto;
+  }
+  td {
+    border: 1px solid black;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .box {
+    width: 100px;
+    height: 50px;
+    background-color: gray;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: move;
+    transition: background-color 0.5s ease-in-out;
+  }
+
+
+#box1 {
+    background-color: red;
+  }
+  
+  #box2 {
+    background-color: orange;
+  }
+  
+  #box3 {
+    background-color: rgb(119, 44, 119);
+  }
+  
+  #box4 {
+    background-color: green;
+  }
+  
+  #box5 {
+    background-color: blue;
+  }
+  
+  #box6 {
+    background-color: indigo;
+  }
+  
+  #box7 {
+    background-color: violet;
+  }
+  
+  #box8 {
+    background-color: gray;
+  }
+  
+  #box9 {
+    background-color: brown;
+  }
+
+  .box.move {
+    opacity: 0.4;
+  }
+  
