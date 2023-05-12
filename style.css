@@ -62,4 +62,42 @@ table {
   .box.move {
     opacity: 0.4;
   }
+
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+
+  }
+
+  #undo-btn {
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 24px;
+    width: 23%;
+    background-color: rgb(50, 120, 148);
+  }
+
+  #container {
+    border: 2px;
+    background-color: rgb(160, 212, 212);
+    height: 100%;
+    width:100%;
+  }
+  
+
+ h2 {
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 24px;
+    width: 20%;
+    background-color: rgb(50, 120, 148);
+  }
   

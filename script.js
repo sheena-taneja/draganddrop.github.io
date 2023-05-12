@@ -1,69 +1,84 @@
 
-const table = document.querySelector("table");
-const boxes = document.querySelectorAll(".box");
-const undoBtn = document.getElementById("undo-btn");
+let sourceBox = null;
+let destBox = null;
+const stack = [];
+const boxes = document.querySelectorAll('.box');
+const undoBtn = document.getElementById('undo-btn');
+undoBtn.addEventListener('click', handleUndo);
 
-let state = [getTableCellContents()];
-
-function getTableCellContents() {
-    const contents = [];
-    for (let i = 0; i < boxes.length; i++) {
-        contents.push(boxes[i].textContent);
-    }
-    return contents;
-}
-
-function swapTableCellContents(src, dest) {
-    const srcBox = src.querySelector(".box");
-    const destBox = dest.querySelector(".box");
-    const temp = srcBox.textContent;
-    srcBox.textContent = destBox.textContent;
-    destBox.textContent = temp;
-}
+attachEventListeners(boxes);
+checkForEmptyStack();
 
 function handleDragStart(e) {
-    e.currentTarget.classList.add("move");
+    sourceBox = e.target;
+    sourceBox.style.opacity = '0.4';
+    e.dataTransfer.setData('text/html', sourceBox.innerHTML);
+}
+
+function handleDragEnter(e) {
+    destBox = e.target;
 }
 
 function handleDragOver(e) {
     e.preventDefault();
 }
 
-function handleDrop(e) {
-    e.preventDefault();
-    const src = document.querySelector(".move").parentNode;
-    const dest = e.currentTarget.parentNode;
-    swapTableCellContents(src, dest);
-    state.push(getTableCellContents());
+function handleDragLeave(e) {
+    destBox = null;
 }
 
 function handleDragEnd(e) {
-    e.currentTarget.classList.remove("move");
+    checkForEmptyStack();
+    sourceBox.style.opacity = '1';
+    destBox = null;
 }
 
 function handleUndo() {
-    if (state.length > 1) {
-        state.pop();
-        const contents = state[state.length - 1];
-        for (let i = 0; i < boxes.length; i++) {
-            boxes[i].textContent = contents[i];
-        }
+    console.log("handle undo")
+    if (stack.length <= 0) {
+        document.getElementById('undo-btn').disabled = true;
+    } else {
+        document.getElementById('undo-btn').disabled = false;
+        const prevState = stack.pop();
+        document.querySelector('table').innerHTML = prevState;
+        const boxes = document.querySelectorAll('.box');
+        attachEventListeners(boxes);
+        boxes.forEach(box =>{
+            box.style.opacity = '1';
+        })
+
     }
 }
 
-for (let i = 0; i < boxes.length; i++) {
-    const box = boxes[i];
-    box.setAttribute("draggable", "true");
-    box.addEventListener("dragstart", handleDragStart);
-    box.addEventListener("dragend", handleDragEnd);
+function handleDrop(e) {
+    checkForEmptyStack();
+
+    e.preventDefault();
+    if (destBox && sourceBox !== destBox) {
+        stack.push(document.querySelector('table').innerHTML);
+        const temp = sourceBox.innerHTML;
+        sourceBox.innerHTML = destBox.innerHTML;
+        destBox.innerHTML = temp;
+    }
 }
 
-const cells = document.querySelectorAll("td");
-for (let i = 0; i < cells.length; i++) {
-    const cell = cells[i];
-    cell.addEventListener("dragover", handleDragOver);
-    cell.addEventListener("drop", handleDrop);
+
+function attachEventListeners(boxes) {
+    boxes.forEach(box => {
+        box.addEventListener('dragstart', handleDragStart);
+        box.addEventListener('dragenter', handleDragEnter);
+        box.addEventListener('dragover', handleDragOver);
+        box.addEventListener('dragleave', handleDragLeave);
+        box.addEventListener('drop', handleDrop);
+        box.addEventListener('dragend', handleDragEnd);
+    });
 }
 
-undoBtn.addEventListener("click", handleUndo);
+function checkForEmptyStack() {
+    if (stack.length <= 0) {
+        document.getElementById('undo-btn').disabled = true;
+    } else {
+        document.getElementById('undo-btn').disabled = false;
+    }
 
+}
