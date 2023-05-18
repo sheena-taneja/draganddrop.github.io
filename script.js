@@ -6,6 +6,9 @@ const boxes = document.querySelectorAll('.box');
 const undoBtn = document.getElementById('undo-btn');
 undoBtn.addEventListener('click', handleUndo);
 
+const addRowBtn = document.getElementById('add-row');
+addRowBtn.addEventListener('click', addRows);
+
 attachEventListeners(boxes);
 checkForEmptyStack();
 
@@ -43,7 +46,7 @@ function handleUndo() {
         document.querySelector('table').innerHTML = prevState;
         const boxes = document.querySelectorAll('.box');
         attachEventListeners(boxes);
-        boxes.forEach(box =>{
+        boxes.forEach(box => {
             box.style.opacity = '1';
         })
 
@@ -81,4 +84,30 @@ function checkForEmptyStack() {
         document.getElementById('undo-btn').disabled = false;
     }
 
+}
+
+
+function addRows() {
+    var table = document.getElementById("tbl");
+    var rowCount = table.rows.length;
+    var colCount = (table.rows[0]).cells.length;
+    var row = table.insertRow(rowCount);
+    for (var i = 0; i < colCount; i++) {
+        var cell = row.insertCell(i);
+        const id="box"+getRandomColor();
+        console.log(id)
+        cell.innerHTML = `<td><div id=${id} class="box" backgrounColor="red" draggable="true">${(rowCount) * (colCount) * 100 + (i + 1) * 100}</div></td>`; // Set cell value to the cell number
+        //cell.style.backgroundColor = getRandomColor();
+    }
+    const boxes = document.querySelectorAll('.box');
+    attachEventListeners(boxes);
+    // emailCell3.innerHTML = "<input type='email' name='email'>";
+}
+
+function getRandomColor() {
+    var color = 1;
+    for (var k = 0; k < 6; k++) {
+        color = Math.floor(Math.random() * 8);
+    }
+    return color%9;
 }
